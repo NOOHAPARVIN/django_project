@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-7=j84iy$c=w5ji^tnj7g7za379vtfhz&1vs6o@c$0th_@xh$g#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -42,7 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'base.apps.BaseConfig',
     'rest_framework',
+     'rest_framework_simplejwt',
     'corsheaders',
+     
+    
+
 ]
 
 REST_FRAMEWORK = {
@@ -52,7 +56,7 @@ REST_FRAMEWORK = {
 }
 
 from datetime import timedelta
-...
+
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
@@ -104,7 +108,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    
 ]
+
+
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -196,3 +206,34 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CORS_ALLOW_ALL_ORIGINS=True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    
+]
+
+# settings.py
+
+
+
+
+
+
+
+# settings.py
+
+# CORS configuration
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    # Add other allowed origins here
+]
+
+# REST framework configuration
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    
+}
+
