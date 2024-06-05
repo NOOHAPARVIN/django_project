@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework.response import Response
 from rest_framework import status
 from base.models import Product, Order, OrderItem, ShippingAddress
@@ -65,6 +65,13 @@ def getMyOrders(request):
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getOrders(request):
+    orders = Order.objects.all()
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -93,3 +100,15 @@ def updateOrderToPaid(request, pk):
         return Response({'detail': 'Order was paid'}, status=status.HTTP_200_OK)
     except Order.DoesNotExist:
         return Response({'detail': 'Order does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def updateOrderToDelivered(request, pk):
+    order = Order.objects.get(_id=pk)
+
+    order.isDelivered = True
+    order.deliveredAt = datetime.now()
+    order.save()
+
+    return Response('Order was delivered')
