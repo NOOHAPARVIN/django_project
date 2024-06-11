@@ -1,0 +1,3 @@
+[submodule "backend/backend/django_project"]
+	path = backend/backend/django_project
+	url = https://github.com/NOOHAPARVIN/django_project.git
